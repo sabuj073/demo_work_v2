@@ -40,6 +40,7 @@ public class AdminReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_report);
         getSupportActionBar().hide();
+        update_report();
 
         recyclerView = findViewById(R.id.recylerview);
         recyclerView.setHasFixedSize(true);
@@ -104,5 +105,14 @@ public class AdminReportActivity extends AppCompatActivity {
     public void update_report(){
         FirebaseDatabase.getInstance().getReference().child("Counter").child("Report")
                 .setValue("0");
+    }
+    @Override
+    public void onBackPressed() {
+        Log.e("Backpresses","True");
+        Intent intent = new Intent(getApplicationContext(),Admin_Interface_Activity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

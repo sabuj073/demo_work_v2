@@ -64,10 +64,12 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Integer data = Integer.parseInt(snapshot.getValue().toString());
-                        if(data<=5){
-                            report_counter.setText(data.toString());
-                        }else{
-                            report_counter.setText("5+");
+                        if(data>0) {
+                            if (data <= 5) {
+                                report_counter.setText(data.toString());
+                            } else {
+                                report_counter.setText("5+");
+                            }
                         }
                     }
 
@@ -81,10 +83,13 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Integer data = Integer.parseInt(snapshot.getValue().toString());
-                        if(data<=5){
-                            message_counter.setText(data.toString());
-                        }else{
-                            message_counter.setText("5+");
+                        if(data>0) {
+                            if (data <= 5) {
+                                message_counter.setText(data.toString());
+                            } else {
+                                message_counter.setText("5+");
+                            }
+
                         }
                         progressBar.setVisibility(View.INVISIBLE);
                     }
@@ -107,10 +112,12 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
             case R.id.admin_report:
                 Intent report_intent = new Intent(getApplicationContext(),AdminReportActivity.class);
                 startActivity(report_intent);
+                finish();
                 break;
 
             case R.id.admin_messages:
                 Intent message_intent = new Intent(getApplicationContext(),AdminMessagesActivity.class);
+                message_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(message_intent);
                 break;
 
@@ -124,30 +131,49 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
                 break;
 
             case R.id.admin_logout:
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("uname", "");
-                editor.putString("uid", "");
-                editor.putString("balance","");
-                editor.putString("phone", "");
-                editor.putString("type", "");
-                editor.putString("email", "");
-                editor.commit();
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(intent);
-                finish();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle("Are you sure?");
+                dialog.setMessage("You are going to logout");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("uname", "");
+                        editor.putString("uid", "");
+                        editor.putString("balance","");
+                        editor.putString("phone", "");
+                        editor.putString("type", "");
+                        editor.putString("email", "");
+                        editor.commit();
+                        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = dialog.create();
+                alertDialog.show();
                 break;
 
         }
     }
 
     public void leave_page(){
-        /*AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Are you sure?");
         dialog.setMessage("You are going to leave this page!!!!");
         dialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Intent intent = new Intent(getApplicationContext(),Admin_Interface_Activity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -158,10 +184,13 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
             }
         });
         AlertDialog alertDialog = dialog.create();
-        alertDialog.show();*/
-        Intent intent = new Intent(getApplicationContext(),Admin_Interface_Activity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        alertDialog.show();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        update_value();
+        super.onRestart();
     }
 }

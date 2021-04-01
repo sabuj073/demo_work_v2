@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +30,7 @@ public class AdminMessagesActivity extends AppCompatActivity {
     List<PaymentModel> modelList;
     ProgressBar progressBar;
     ImageView logo;
+    TextView message_counter,report_counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +38,14 @@ public class AdminMessagesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_messages);
         getSupportActionBar().hide();
 
+
         recyclerView = findViewById(R.id.message_recylerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         progressBar = findViewById(R.id.admin_messageProgressbar);
         logo = findViewById(R.id.logo);
+        update_message();
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +79,7 @@ public class AdminMessagesActivity extends AppCompatActivity {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Are you sure?");
         dialog.setMessage("You are going to leave this page!!!!");
-        dialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getApplicationContext(),Admin_Interface_Activity.class);
@@ -101,5 +105,15 @@ public class AdminMessagesActivity extends AppCompatActivity {
     public void update_message(){
         FirebaseDatabase.getInstance().getReference().child("Counter").child("Message")
                 .setValue("0");
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.e("Backpresses","True");
+        Intent intent = new Intent(getApplicationContext(),Admin_Interface_Activity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

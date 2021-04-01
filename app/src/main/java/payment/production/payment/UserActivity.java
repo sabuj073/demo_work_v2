@@ -152,17 +152,35 @@
 
 
                 case R.id.logout_btn:
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString("uname", "");
-                    editor.putString("uid", "");
-                    editor.putString("balance","");
-                    editor.putString("phone", "");
-                    editor.putString("type", "");
-                    editor.putString("email", "");
-                    editor.commit();
-                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setTitle("Are you sure?");
+                    dialog.setMessage("You are goin to logout");
+                    dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString("uname", "");
+                            editor.putString("uid", "");
+                            editor.putString("balance","");
+                            editor.putString("phone", "");
+                            editor.putString("type", "");
+                            editor.putString("email", "");
+                            editor.commit();
+                            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alertDialog = dialog.create();
+                    alertDialog.show();
+
                     break;
 
             }
@@ -212,7 +230,7 @@
         }
 
         public void leave_page(){
-            /*AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle("Are you sure?");
             dialog.setMessage("You are going to leave this page!!!!");
             dialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -232,10 +250,7 @@
                 }
             });
             AlertDialog alertDialog = dialog.create();
-            alertDialog.show();*/
-            Intent intent = new Intent(getApplicationContext(),UserActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
+            alertDialog.show();
+
         }
     }
