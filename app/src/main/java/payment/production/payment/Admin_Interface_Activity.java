@@ -2,13 +2,22 @@ package payment.production.payment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -18,6 +27,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class Admin_Interface_Activity extends AppCompatActivity implements View.OnClickListener {
     ImageView admin_create_client,admin_client_list,admin_messages,admin_report,logout;
@@ -65,6 +76,7 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Integer data = Integer.parseInt(snapshot.getValue().toString());
                         if(data>0) {
+                            show_notification("Incoming Report","New Report From Client");
                             if (data <= 5) {
                                 report_counter.setText(data.toString());
                             } else {
@@ -84,6 +96,7 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Integer data = Integer.parseInt(snapshot.getValue().toString());
                         if(data>0) {
+                            show_notification("Incoming Message","New Message From Client");
                             if (data <= 5) {
                                 message_counter.setText(data.toString());
                             } else {
@@ -117,7 +130,7 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
 
             case R.id.admin_messages:
                 Intent message_intent = new Intent(getApplicationContext(),AdminMessagesActivity.class);
-                message_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                message_intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 startActivity(message_intent);
                 break;
 
@@ -193,4 +206,45 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
         update_value();
         super.onRestart();
     }
+
+    public  void  show_notification(String title,String message){
+        createNotificationChannel();
+        Intent intent = new Intent(this, Admin_Interface_Activity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder mbuilder = new NotificationCompat.Builder(this, "sabuj")
+                .setSmallIcon(R.drawable.bkash_logo)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000})
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0,mbuilder.build());
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(500);
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("sabuj", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 }

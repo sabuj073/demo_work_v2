@@ -26,10 +26,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class UserPaymentConfirmActivity extends AppCompatActivity implements View.OnClickListener {
 
     SharedPreferences sharedpreferences;
-    String payment_number,payment_amount,transection_type,payment_type,balance_data,client_email,number_string,name,user_id,password,type;
+    String payment_number,payment_amount,transection_type,payment_type,balance_data,client_email,number_string,name,user_id,password,type,date,time;
     TextInputEditText confirm_password;
     TextView number_holder,amount_holder,payment_type_holder,receiver_type_holder,textView,balance,service_holder;
     Button user_payment_confirm;
@@ -62,6 +66,8 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
         progressBar = findViewById(R.id.payment_progressbar);
         user_payment_confirm.setOnClickListener(this);
         balance.setText("\u09F3 "+balance_data);
+        date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        time = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault()).format(new Date());
 
         logo = findViewById(R.id.logo);
         logo.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +116,7 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
                 progressBar.setVisibility(View.VISIBLE);
                 String confirm = confirm_password.getText().toString();
                 if(confirm.equals(password)){
-                    Payment payment = new Payment(payment_number, payment_amount, transection_type, payment_type,number_string,client_email,name,user_id,type);
+                    Payment payment = new Payment(payment_number, payment_amount, transection_type, payment_type,number_string,client_email,name,user_id,type,date,time);
 
                     FirebaseDatabase.getInstance().getReference("Payments")
                             .push()

@@ -1,9 +1,9 @@
 package payment.production.payment;
 
 public class PaymentModel {
-    public String number,amount,transection_type,payment_type,from_number,from_email,from_name,from_id,key,service;
+    public String number,amount,transection_type,payment_type,from_number,from_email,from_name,from_id,key,service,date,time;
 
-    public PaymentModel(String number, String amount, String transection_type, String payment_type, String from_number, String from_email, String from_name, String from_id, String key, String service) {
+    public PaymentModel(String number, String amount, String transection_type, String payment_type, String from_number, String from_email, String from_name, String from_id, String key, String service, String date, String time) {
         this.number = number;
         this.amount = amount;
         this.transection_type = transection_type;
@@ -14,6 +14,8 @@ public class PaymentModel {
         this.from_id = from_id;
         this.key = key;
         this.service = service;
+        this.date = date;
+        this.time = time;
     }
 
     public String getNumber() {
@@ -94,5 +96,21 @@ public class PaymentModel {
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

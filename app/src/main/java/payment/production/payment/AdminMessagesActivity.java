@@ -63,7 +63,7 @@ public class AdminMessagesActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Payment payment = snapshot.getValue(Payment.class);
                             String key = snapshot.getKey();
-                            modelList.add(new PaymentModel(payment.number,payment.amount,payment.transection_type,payment.payment_type,payment.from_number,payment.from_email,payment.from_name,payment.from_id,key,payment.service));
+                            modelList.add(new PaymentModel(payment.number,payment.amount,payment.transection_type,payment.payment_type,payment.from_number,payment.from_email,payment.from_name,payment.from_id,key,payment.service,payment.date,payment.time));
                         }
                         adapter = new PaymentAdapter(AdminMessagesActivity.this,modelList);
                         recyclerView.setAdapter(adapter);

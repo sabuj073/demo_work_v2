@@ -52,8 +52,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         String uid_text = reportModels.get(position).getUserid();
         String report_text = reportModels.get(position).getText();
         String key = reportModels.get(position).getKey();
+        String date = reportModels.get(position).getDate();
+        String time = reportModels.get(position).getTime();
 
-        holder.setView(name_text,email_text,number_text,uid_text,report_text,key);
+        holder.setView(name_text,email_text,number_text,uid_text,report_text,key,date,time);
 
     }
 
@@ -63,7 +65,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
-        TextView name,email,number,userid,report;
+        TextView name,email,number,userid,report,date_holder,time_holder;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,15 +74,19 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             number = itemView.findViewById(R.id.number_holder);
             userid = itemView.findViewById(R.id.user_id_holder);
             report = itemView.findViewById(R.id.report_holder);
+            date_holder = itemView.findViewById(R.id.date_holder);
+            time_holder = itemView.findViewById(R.id.time_holder);
 
         }
 
-        public void setView(String name_text, String email_text, String number_text, String uid_text, String report_text, String key) {
+        public void setView(String name_text, String email_text, String number_text, String uid_text, String report_text, String key,String date,String time) {
             name.setText(name_text);
             email.setText(email_text);
             number.setText(number_text);
             userid.setText(uid_text);
             report.setText(report_text);
+            date_holder.setText(date);
+            time_holder.setText(time);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

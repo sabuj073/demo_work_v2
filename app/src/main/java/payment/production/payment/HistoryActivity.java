@@ -67,9 +67,9 @@
                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                     Payment payment = snapshot.getValue(Payment.class);
                                     if(payment.from_number.equals(number_text)) {
-                                        modelList.add(new PaymentModel(payment.number, payment.amount, payment.transection_type, payment.payment_type, "", payment.from_email, payment.from_name, payment.from_id,"",payment.service));
+                                        modelList.add(new PaymentModel(payment.number, payment.amount, payment.transection_type, payment.payment_type, "", payment.from_email, payment.from_name, payment.from_id,"",payment.service,payment.date,payment.time));
                                     }else if(payment.number.equals(number_text)){
-                                        modelList.add(new PaymentModel(payment.number, payment.amount, payment.transection_type, payment.payment_type, payment.from_number, payment.from_email, payment.from_name, payment.from_id,"",payment.service));
+                                        modelList.add(new PaymentModel(payment.number, payment.amount, payment.transection_type, payment.payment_type, payment.from_number, payment.from_email, payment.from_name, payment.from_id,"",payment.service,payment.date,payment.time));
                                     }
                                 }
                                 adapter = new HistoryAdapter(getApplicationContext(),modelList);

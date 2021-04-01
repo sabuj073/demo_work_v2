@@ -47,6 +47,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.payment_type_holder.setText(reportModels.get(position).getTransection_type());
         holder.receiver_type_holder.setText(reportModels.get(position).getPayment_type());
         holder.service_holder.setText(reportModels.get(position).getService());
+        holder.date_holder.setText(reportModels.get(position).getDate());
+        holder.time_holder.setText(reportModels.get(position).getTime());
 
     }
 
@@ -56,7 +58,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
-        TextView number,amount_holder,payment_type_holder,receiver_type_holder,service_holder;
+        TextView number,amount_holder,payment_type_holder,receiver_type_holder,service_holder,date_holder,time_holder;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +67,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             payment_type_holder = itemView.findViewById(R.id.payment_type_holder);
             receiver_type_holder = itemView.findViewById(R.id.receiver_type_holder);
             service_holder = itemView.findViewById(R.id.service_holder);
+            date_holder = itemView.findViewById(R.id.date_holder);
+            time_holder = itemView.findViewById(R.id.time_holder);
 
         }
     }

@@ -56,8 +56,10 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         String receivertype = reportModels.get(position).getPayment_type();
         String key = reportModels.get(position).getKey();
         String service = reportModels.get(position).getService();
+        String date = reportModels.get(position).getDate();
+        String time = reportModels.get(position).getTime();
 
-        holder.setView(from_name,from_email,from_number,from_id,tonumber,amount,paymenttpe,receivertype,key,service);
+        holder.setView(from_name,from_email,from_number,from_id,tonumber,amount,paymenttpe,receivertype,key,service,date,time);
     }
 
 
@@ -67,7 +69,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
-        TextView name,email,number,userid,to_holder,amount_holder,payment_type_holder,receiver_type_holder,service_holder;
+        TextView name,email,number,userid,to_holder,amount_holder,payment_type_holder,receiver_type_holder,service_holder,date_holder,time_holder;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,10 +82,12 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
             payment_type_holder = itemView.findViewById(R.id.payment_type_holder);
             receiver_type_holder = itemView.findViewById(R.id.receiver_type_holder);
             service_holder = itemView.findViewById(R.id.service_holder);
+            date_holder = itemView.findViewById(R.id.date_holder);
+            time_holder = itemView.findViewById(R.id.time_holder);
 
         }
 
-        public void setView(String from_name, String from_email, String from_number, String from_id, String tonumber, String amount, String paymenttpe, String receivertype, String key,String service) {
+        public void setView(String from_name, String from_email, String from_number, String from_id, String tonumber, String amount, String paymenttpe, String receivertype, String key,String service,String date,String time) {
             name.setText(from_name);
             email.setText(from_email);
             number.setText(from_number);
@@ -93,6 +97,8 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
             payment_type_holder.setText(paymenttpe);
             receiver_type_holder.setText(receivertype);
             service_holder.setText(service);
+            date_holder.setText(date);
+            time_holder.setText(time);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

@@ -25,11 +25,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class ReportActivity extends AppCompatActivity {
 
     TextInputEditText report_text;
     Button report_send;
-    String client_email,report,name,user_id,number;
+    String client_email,report,name,user_id,number,date,time;
     SharedPreferences sharedpreferences;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
@@ -51,6 +55,8 @@ public class ReportActivity extends AppCompatActivity {
         report_send = findViewById(R.id.send_report_btn);
         progressBar = findViewById(R.id.report_progressbar);
         mAuth = FirebaseAuth.getInstance();
+        date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        time = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault()).format(new Date());
 
         logo = findViewById(R.id.logo);
         logo.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +75,7 @@ public class ReportActivity extends AppCompatActivity {
                     report_text.requestFocus();
                 }else{
                     //progressBar.setVisibility(View.VISIBLE);
-                    Report report_class = new Report(report,client_email,name,user_id,number);
+                    Report report_class = new Report(report,client_email,name,user_id,number,date,time);
                     FirebaseDatabase.getInstance().getReference("Reports")
                             .push()
                             .setValue(report_class).addOnCompleteListener(new OnCompleteListener<Void>() {

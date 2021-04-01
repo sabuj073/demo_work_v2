@@ -64,7 +64,7 @@ public class AdminReportActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Report report = snapshot.getValue(Report.class);
                             String key = snapshot.getKey();
-                            reportList.add(new ReportModel(report.text,report.email,report.name,report.userid,report.number,key));
+                            reportList.add(new ReportModel(report.text,report.email,report.name,report.userid,report.number,key,report.date,report.time));
 
                         }
                         adapter = new ReportAdapter(AdminReportActivity.this,reportList);

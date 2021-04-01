@@ -1,15 +1,17 @@
 package payment.production.payment;
 
 public class ReportModel {
-    public String text,email,name,userid,number,key;
+    public String text,email,name,userid,number,key,date,time;
 
-    public ReportModel(String text, String email, String name, String userid, String number, String key) {
+    public ReportModel(String text, String email, String name, String userid, String number, String key, String date, String time) {
         this.text = text;
         this.email = email;
         this.name = name;
         this.userid = userid;
         this.number = number;
         this.key = key;
+        this.date = date;
+        this.time = time;
     }
 
     public String getText() {
@@ -59,4 +61,21 @@ public class ReportModel {
     public void setKey(String key) {
         this.key = key;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 }
+
