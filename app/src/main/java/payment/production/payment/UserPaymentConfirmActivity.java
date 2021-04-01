@@ -29,9 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 public class UserPaymentConfirmActivity extends AppCompatActivity implements View.OnClickListener {
 
     SharedPreferences sharedpreferences;
-    String payment_number,payment_amount,transection_type,payment_type,balance_data,client_email,number_string,name,user_id,password;
+    String payment_number,payment_amount,transection_type,payment_type,balance_data,client_email,number_string,name,user_id,password,type;
     TextInputEditText confirm_password;
-    TextView number_holder,amount_holder,payment_type_holder,receiver_type_holder,textView,balance;;
+    TextView number_holder,amount_holder,payment_type_holder,receiver_type_holder,textView,balance,service_holder;
     Button user_payment_confirm;
     ProgressBar progressBar;
     ImageView logo;
@@ -57,6 +57,7 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
         receiver_type_holder = findViewById(R.id.receiver_type_holder);
         textView = findViewById(R.id.textView2);
         balance = findViewById(R.id.user_balance);
+        service_holder = findViewById(R.id.service_holder);
         user_payment_confirm = findViewById(R.id.user_payment_confirm);
         progressBar = findViewById(R.id.payment_progressbar);
         user_payment_confirm.setOnClickListener(this);
@@ -77,10 +78,12 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
             payment_amount =data.getString("amount");
             payment_type = data.getString("payment_type");
             transection_type = data.getString("transection_type");
+            type = data.getString("type");
             number_holder.setText(payment_number);
             amount_holder.setText(payment_amount);
             payment_type_holder.setText(payment_type);
             receiver_type_holder.setText(transection_type);
+            service_holder.setText(type);
         }
     }
 
@@ -107,7 +110,7 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
                 progressBar.setVisibility(View.VISIBLE);
                 String confirm = confirm_password.getText().toString();
                 if(confirm.equals(password)){
-                    Payment payment = new Payment(payment_number, payment_amount, transection_type, payment_type,number_string,client_email,name,user_id);
+                    Payment payment = new Payment(payment_number, payment_amount, transection_type, payment_type,number_string,client_email,name,user_id,type);
 
                     FirebaseDatabase.getInstance().getReference("Payments")
                             .push()

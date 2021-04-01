@@ -53,8 +53,9 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         String paymenttpe  = reportModels.get(position).getTransection_type();
         String receivertype = reportModels.get(position).getPayment_type();
         String key = reportModels.get(position).getKey();
+        String service = reportModels.get(position).getService();
 
-        holder.setView(from_name,from_email,from_number,from_id,tonumber,amount,paymenttpe,receivertype,key);
+        holder.setView(from_name,from_email,from_number,from_id,tonumber,amount,paymenttpe,receivertype,key,service);
     }
 
 
@@ -64,7 +65,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
-        TextView name,email,number,userid,to_holder,amount_holder,payment_type_holder,receiver_type_holder;
+        TextView name,email,number,userid,to_holder,amount_holder,payment_type_holder,receiver_type_holder,service_holder;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,10 +77,11 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
             amount_holder = itemView.findViewById(R.id.amount_holder);
             payment_type_holder = itemView.findViewById(R.id.payment_type_holder);
             receiver_type_holder = itemView.findViewById(R.id.receiver_type_holder);
+            service_holder = itemView.findViewById(R.id.service_holder);
 
         }
 
-        public void setView(String from_name, String from_email, String from_number, String from_id, String tonumber, String amount, String paymenttpe, String receivertype, String key) {
+        public void setView(String from_name, String from_email, String from_number, String from_id, String tonumber, String amount, String paymenttpe, String receivertype, String key,String service) {
             name.setText(from_name);
             email.setText(from_email);
             number.setText(from_number);
@@ -88,7 +90,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
             amount_holder.setText(amount);
             payment_type_holder.setText(paymenttpe);
             receiver_type_holder.setText(receivertype);
-
+            service_holder.setText(service);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

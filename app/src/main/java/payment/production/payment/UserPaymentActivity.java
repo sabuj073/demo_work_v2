@@ -38,6 +38,7 @@ public class UserPaymentActivity extends AppCompatActivity implements View.OnCli
     Button confirm;
     ProgressBar payment_progressbar;
     private FirebaseAuth mAuth;
+    String type;
     ImageView logo;
 
     @Override
@@ -74,7 +75,7 @@ public class UserPaymentActivity extends AppCompatActivity implements View.OnCli
         Bundle data = getIntent().getExtras();
         if(data!=null)
         {
-            String type =data.getString("Type");
+            type =data.getString("Type");
             textView.setText("Cash Out/ Send Money\n"+type);
         }
     }
@@ -99,6 +100,7 @@ public class UserPaymentActivity extends AppCompatActivity implements View.OnCli
                     confirm.putExtra("amount",payment_amount);
                     confirm.putExtra("payment_type",payment_type);
                     confirm.putExtra("transection_type",transection_type);
+                    confirm.putExtra("type",type);
                     payment_progressbar.setVisibility(View.INVISIBLE);
                     startActivity(confirm);
 
