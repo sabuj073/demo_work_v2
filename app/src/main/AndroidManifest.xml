@@ -3,8 +3,8 @@
     package="payment.production.payment">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Payment">
-        <activity android:name=".UserPaymentConfirmActivity"></activity>
+        <activity android:name=".UserSectionNotificationMainActivity"></activity>
+        <activity android:name=".ForeignRechargeActivity" />
+        <activity android:name=".SendNotificationActivity" />
+        <activity android:name=".UserRechargeActivity" />
+        <activity android:name=".UserPaymentConfirmActivity" />
         <activity android:name=".EditMyselfActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".EditClientActivity" />

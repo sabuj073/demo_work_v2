@@ -33,7 +33,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class Admin_Interface_Activity extends AppCompatActivity implements View.OnClickListener {
     ImageView admin_create_client,admin_client_list,admin_messages,admin_report,logout;
     SharedPreferences sharedpreferences;
-    ImageView logo;
+    ImageView logo,sendnotify;
     String type;
     TextView message_counter,report_counter;
     ProgressBar progressBar;
@@ -58,6 +58,7 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
         message_counter = findViewById(R.id.message_counter);
         report_counter = findViewById(R.id.report_counter);
         progressBar = findViewById(R.id.admin_progressbar);
+        sendnotify = findViewById(R.id.send_notify);
 
         admin_create_client.setOnClickListener(this);
         admin_client_list.setOnClickListener(this);
@@ -65,6 +66,7 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
         admin_report.setOnClickListener(this);
         logout.setOnClickListener(this);
         logo.setOnClickListener(this);
+        sendnotify.setOnClickListener(this);
         update_value();
     }
 
@@ -117,6 +119,11 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.send_notify:
+                Intent send_notify = new Intent(getApplicationContext(),SendNotificationActivity.class);
+                send_notify.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(send_notify);
+                break;
             case R.id.admin_create_client:
                 Intent create_client = new Intent(getApplicationContext(),CreateClientActivity.class);
                 startActivity(create_client);
@@ -214,7 +221,7 @@ public class Admin_Interface_Activity extends AppCompatActivity implements View.
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder mbuilder = new NotificationCompat.Builder(this, "sabuj")
-                .setSmallIcon(R.drawable.bkash_logo)
+                .setSmallIcon(R.drawable.unnamed)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

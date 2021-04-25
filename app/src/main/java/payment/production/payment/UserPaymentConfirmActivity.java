@@ -35,7 +35,7 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
     SharedPreferences sharedpreferences;
     String payment_number,payment_amount,transection_type,payment_type,balance_data,client_email,number_string,name,user_id,password,type,date,time;
     TextInputEditText confirm_password;
-    TextView number_holder,amount_holder,payment_type_holder,receiver_type_holder,textView,balance,service_holder;
+    TextView number_holder,amount_holder,payment_type_holder,receiver_type_holder,textView,balance,service_holder,date_holder,time_holder;
     Button user_payment_confirm;
     ProgressBar progressBar;
     ImageView logo;
@@ -64,10 +64,14 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
         service_holder = findViewById(R.id.service_holder);
         user_payment_confirm = findViewById(R.id.user_payment_confirm);
         progressBar = findViewById(R.id.payment_progressbar);
+        date_holder = findViewById(R.id.date_holder);
+        time_holder = findViewById(R.id.time_holder);
         user_payment_confirm.setOnClickListener(this);
         balance.setText("\u09F3 "+balance_data);
         date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         time = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault()).format(new Date());
+        date_holder.setText(date);
+        time_holder.setText(time);
 
         logo = findViewById(R.id.logo);
         logo.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +91,8 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
             type = data.getString("type");
             number_holder.setText(payment_number);
             amount_holder.setText(payment_amount);
-            payment_type_holder.setText(payment_type);
-            receiver_type_holder.setText(transection_type);
+            payment_type_holder.setText(transection_type);
+            receiver_type_holder.setText(payment_type);
             service_holder.setText(type);
         }
     }
@@ -129,7 +133,7 @@ public class UserPaymentConfirmActivity extends AppCompatActivity implements Vie
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(UserPaymentConfirmActivity.this);
                                 progressBar.setVisibility(View.INVISIBLE);
                                 dialog.setTitle("Congratz");
-                                dialog.setMessage("Payment Successful");
+                                dialog.setMessage(transection_type+" Successful");
                                 dialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

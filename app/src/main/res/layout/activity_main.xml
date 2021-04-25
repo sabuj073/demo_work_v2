@@ -11,12 +11,13 @@
 
     <ImageView
         android:id="@+id/logoImage"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:src="@drawable/unnamed" />
 
     <TextView
         android:id="@+id/logo_name"
+        android:layout_marginTop="10px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello there, Welcome Back"

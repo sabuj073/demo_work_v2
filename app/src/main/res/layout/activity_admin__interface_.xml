@@ -184,5 +184,24 @@
         app:layout_constraintVertical_bias="0.554"
         tools:visibility="invisible" />
 
+    <ImageView
+        android:id="@+id/send_notify"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/admin_logout"
+        app:layout_constraintTop_toTopOf="@+id/admin_logout"
+        app:srcCompat="@drawable/chat" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Notification"
+        app:layout_constraintEnd_toEndOf="@+id/send_notify"
+        app:layout_constraintStart_toStartOf="@+id/send_notify"
+        app:layout_constraintTop_toBottomOf="@+id/send_notify" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

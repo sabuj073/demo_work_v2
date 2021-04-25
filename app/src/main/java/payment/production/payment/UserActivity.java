@@ -3,12 +3,18 @@
     import androidx.annotation.NonNull;
     import androidx.appcompat.app.AlertDialog;
     import androidx.appcompat.app.AppCompatActivity;
+    import androidx.core.app.NotificationCompat;
 
+    import android.app.NotificationChannel;
+    import android.app.NotificationManager;
+    import android.app.PendingIntent;
     import android.content.Context;
     import android.content.DialogInterface;
     import android.content.Intent;
     import android.content.SharedPreferences;
+    import android.os.Build;
     import android.os.Bundle;
+    import android.os.Vibrator;
     import android.view.View;
     import android.widget.Button;
     import android.widget.ImageView;
@@ -24,9 +30,9 @@
 
     public class UserActivity extends AppCompatActivity implements View.OnClickListener {
         ImageView recharge_icon_user,bkash_icon_user,rocket_icon_user,nagad_icon_user,uchas_icon_user,mcash_icon_user,report_icon_user,tr_history_icon;
-        TextView username,userid,userbalance,availalable_balance;
+        TextView username,userid,userbalance,availalable_balance,usernotificationcounter;
         String name,id,balance,email_text,number_text;
-        ImageView logout;
+        ImageView logout,userpartnotification;
         SharedPreferences sharedpreferences;
         ProgressBar progressBar;
         ImageView logo;
@@ -61,8 +67,12 @@
             tr_history_icon = findViewById(R.id.tr_history_icon);
             availalable_balance = findViewById(R.id.textView7);
             progressBar = findViewById(R.id.user_activity_progressbar);
+            userpartnotification = findViewById(R.id.userpartnotification);
+            usernotificationcounter = findViewById(R.id.usernotificationcounter);
 
-            //recharge_icon_user.setOnClickListener(this);
+            checkNotifications(number_text);
+
+            recharge_icon_user.setOnClickListener(this);
             bkash_icon_user.setOnClickListener(this);
             rocket_icon_user.setOnClickListener(this);
             nagad_icon_user.setOnClickListener(this);
@@ -75,6 +85,7 @@
             availalable_balance.setOnClickListener(this);
             username.setOnClickListener(this);
             userid.setOnClickListener(this);
+            userpartnotification.setOnClickListener(this);
             updateBalance();
 
             logo = findViewById(R.id.logo);
@@ -90,8 +101,8 @@
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.recharge_icon_user:
-                    Intent recharge = new Intent(getApplicationContext(),UserPaymentActivity.class);
-                    recharge.putExtra("Type","Recharge");
+                    Intent recharge = new Intent(getApplicationContext(),UserRechargeActivity.class);
+                    recharge.putExtra("Type","Mobile Recharge");
                     startActivity(recharge);
                     break;
 
@@ -99,6 +110,11 @@
                     Intent bkash = new Intent(getApplicationContext(),UserPaymentActivity.class);
                     bkash.putExtra("Type","Bkash");
                     startActivity(bkash);
+                    break;
+
+                case R.id.userpartnotification:
+                    Intent notification = new Intent(getApplicationContext(),UserSectionNotificationMainActivity.class);
+                    startActivity(notification);
                     break;
 
                 case R.id.rocket_icon_user:
@@ -252,5 +268,97 @@
             AlertDialog alertDialog = dialog.create();
             alertDialog.show();
 
+        }
+
+        private void checkNotifications(String number)
+        {
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+            rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.hasChild("NotificationCounter")) {
+                        FirebaseDatabase.getInstance().getReference().child("NotificationCounter").child(removespecial(number))
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        Integer count = 0;
+                                        if(snapshot.getValue()==null){
+                                            count = 1;
+                                            usernotificationcounter.setVisibility(View.INVISIBLE);
+                                        }else {
+                                            count = Integer.parseInt(snapshot.getValue().toString());
+                                            if(count>0) {
+                                                try {
+                                                    usernotificationcounter.setVisibility(View.VISIBLE);
+                                                    usernotificationcounter.setText(count.toString());
+                                                    show_notification("New Notification","You have a new notification from admin");
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+
+
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+
+        private String removespecial(String str) {
+            str = str.replaceAll("[-+^]*", "");
+            return str;
+        }
+
+        private void createNotificationChannel() {
+            // Create the NotificationChannel, but only on API 26+ because
+            // the NotificationChannel class is new and not in the support library
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CharSequence name = getString(R.string.channel_name);
+                String description = getString(R.string.channel_description);
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                NotificationChannel channel = new NotificationChannel("useractivity", name, importance);
+                channel.setDescription(description);
+                // Register the channel with the system; you can't change the importance
+                // or other notification behaviors after this
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+
+        public  void  show_notification(String title,String message){
+            createNotificationChannel();
+            Intent intent = new Intent(this, UserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+            NotificationCompat.Builder mbuilder = new NotificationCompat.Builder(this, "sabuj")
+                    .setSmallIcon(R.drawable.unnamed)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000})
+                    // Set the intent that will fire when the user taps the notification
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
+
+
+            NotificationManager notificationManager = (NotificationManager)
+                    getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(0,mbuilder.build());
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(500);
         }
     }
