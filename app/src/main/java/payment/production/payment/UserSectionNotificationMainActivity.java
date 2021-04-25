@@ -95,7 +95,7 @@ public class UserSectionNotificationMainActivity extends AppCompatActivity {
         dialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(getApplicationContext(), Admin_Interface_Activity.class);
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
